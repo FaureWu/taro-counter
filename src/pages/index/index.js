@@ -1,17 +1,17 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { actions } from 'roronoa-zoro'
+import Counter from '../../components/counter'
 import './index.less'
 
 const counter = actions('counter')
-
 @connect(
   state => ({
     count: state.counter,
   }),
   dispatch => ({
-    add: () => dispatch(counter.add()),
+    onAdd: () => dispatch(counter.add()),
   })
 )
 export default class Index extends Component {
@@ -29,12 +29,15 @@ export default class Index extends Component {
 
   componentDidHide () { }
 
+  onAdd = () => {
+    this.props.onAdd()
+  }
+
   render () {
-    const { count, add } = this.props
+    const { count } = this.props
     return (
       <View className='index'>
-        <Text>{count}</Text>
-        <View onClick={add}>Click</View>
+        <Counter count={count} onAdd={this.onAdd.bind(this)} />
       </View>
     )
   }
